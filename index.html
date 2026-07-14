@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#b94f3d">
+  <meta name="description" content="Test di ripasso A2 sull'imperativo presente, con spiegazioni in cinese.">
+  <title>Imperativo presente</title>
+  <style>
+    :root {
+      --paper: #fffdf8;
+      --cream: #f8f1e5;
+      --ink: #2d2926;
+      --muted: #716862;
+      --terracotta: #b94f3d;
+      --terracotta-dark: #8f382b;
+      --olive: #60734a;
+      --olive-soft: #edf2e8;
+      --red-soft: #fff0ed;
+      --line: #e5d8c9;
+      --shadow: 0 12px 34px rgba(74, 52, 37, .09);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--cream); }
+    body {
+      margin: 0;
+      min-width: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(185, 79, 61, .10), transparent 28rem),
+        linear-gradient(180deg, #fbf6ed 0, #f5eee3 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    button, input { font: inherit; }
+    button, label { -webkit-tap-highlight-color: transparent; }
+
+    .page-shell {
+      width: min(100% - 28px, 820px);
+      margin: 0 auto;
+      padding: max(28px, env(safe-area-inset-top)) 0 max(48px, env(safe-area-inset-bottom));
+    }
+
+    .hero { text-align: center; padding: 34px 10px 26px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--terracotta-dark);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before, .eyebrow::after { content: ""; width: 24px; height: 1px; background: currentColor; opacity: .45; }
+    h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.35rem, 9vw, 4.5rem); line-height: 1.05; color: #47372e; }
+    .subtitle { margin: 18px 0 2px; font-size: clamp(1rem, 3.7vw, 1.2rem); font-weight: 700; }
+    .zh { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .progress-wrap {
+      position: sticky;
+      top: 10px;
+      z-index: 10;
+      margin: 0 0 24px;
+      padding: 12px 14px;
+      background: rgba(255, 253, 248, .92);
+      border: 1px solid rgba(229, 216, 201, .9);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(74, 52, 37, .08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .progress-label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 7px; color: var(--muted); font-size: .82rem; font-weight: 700; }
+    .progress-track { height: 7px; overflow: hidden; background: #eadfd2; border-radius: 999px; }
+    .progress-bar { width: 0; height: 100%; background: linear-gradient(90deg, var(--terracotta), #cf7b55); border-radius: inherit; transition: width .35s ease; }
+
+    .part-card {
+      margin: 0 0 24px;
+      padding: clamp(20px, 5vw, 34px);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .part-card[hidden] { display: none; }
+    .part-number { margin: 0 0 5px; color: var(--terracotta); font-size: .76rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.48rem, 5.5vw, 2rem); line-height: 1.25; }
+    .part-intro { margin: 8px 0 22px; color: var(--muted); }
+
+    .question { min-width: 0; padding: 21px 0; border-top: 1px solid var(--line); }
+    .question:first-of-type { border-top: 0; }
+    .question-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 9px; }
+    .q-number { flex: 0 0 auto; display: inline-grid; place-items: center; width: 29px; height: 29px; color: #fff; background: #6d5a4e; border-radius: 50%; font-size: .82rem; font-weight: 800; }
+    .verb-label { min-width: 0; color: var(--terracotta-dark); font-weight: 800; overflow-wrap: anywhere; }
+    .prompt-zh { margin: 0 0 8px; color: var(--muted); font-size: .92rem; }
+    .sentence { margin: 0 0 13px; color: #3f342d; font-family: Georgia, "Times New Roman", serif; font-size: 1.08rem; font-weight: 700; overflow-wrap: anywhere; }
+
+    .options { display: grid; gap: 9px; }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      min-width: 0;
+      padding: 12px 13px;
+      border: 1px solid #d9cec1;
+      border-radius: 13px;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color .15s, background .15s, transform .15s;
+    }
+    .option:active { transform: scale(.995); }
+    .option:has(input:checked) { border-color: var(--terracotta); background: #fff7f3; }
+    .option input { flex: 0 0 auto; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--terracotta); }
+    .option span { min-width: 0; overflow-wrap: anywhere; }
+    .option .option-zh { display: block; margin-top: 2px; color: var(--muted); font-size: .9rem; }
+
+    .text-answer {
+      display: block;
+      width: 100%;
+      min-height: 50px;
+      padding: 11px 13px;
+      border: 1.5px solid #cfc1b2;
+      border-radius: 12px;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      appearance: none;
+    }
+    .text-answer:focus { border-color: var(--terracotta); box-shadow: 0 0 0 4px rgba(185, 79, 61, .11); }
+
+    .feedback { display: none; margin: 11px 0 0; padding: 9px 11px; border-radius: 10px; font-size: .91rem; font-weight: 750; overflow-wrap: anywhere; }
+    .feedback.show { display: block; }
+    .feedback.correct { color: #3d5b2c; background: var(--olive-soft); }
+    .feedback.incorrect { color: #923527; background: var(--red-soft); }
+    .question.is-correct .text-answer { border-color: #789461; background: #fbfdf9; }
+    .question.is-incorrect .text-answer { border-color: #c86756; background: #fffafa; }
+    .explanation { display: none; margin: 9px 0 0; color: var(--muted); font-size: .9rem; }
+    .question.checked .explanation { display: block; }
+
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px; padding-top: 21px; border-top: 1px solid var(--line); }
+    .check-button, .restart-button {
+      min-height: 50px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 13px;
+      font-weight: 850;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .check-button { color: #fff; background: var(--terracotta); box-shadow: 0 7px 16px rgba(143, 56, 43, .19); }
+    .check-button:hover { background: var(--terracotta-dark); }
+    .check-button:focus-visible, .restart-button:focus-visible { outline: 3px solid rgba(185, 79, 61, .3); outline-offset: 3px; }
+    .score { color: var(--terracotta-dark); font-family: Georgia, "Times New Roman", serif; font-size: 1.35rem; font-weight: 800; }
+    .section-message { display: none; width: 100%; margin: 2px 0 0; padding: 13px 14px; border-radius: 12px; }
+    .section-message.show { display: block; }
+    .section-message.success { color: #385428; background: var(--olive-soft); font-weight: 800; }
+    .section-message.retry { color: #773a30; background: var(--red-soft); }
+    .section-message span { display: block; }
+
+    .examples { margin: 14px 0 0; padding: 14px 16px; color: #4e453e; background: #f7f1e8; border-left: 4px solid #d49a6d; border-radius: 0 12px 12px 0; font-size: .92rem; }
+    .examples strong { display: block; margin-bottom: 3px; }
+
+    .complete-rule { display: none; margin-top: 22px; padding: 20px; color: #334428; background: linear-gradient(145deg, #f0f5ea, #f8faf4); border: 1px solid #cad8be; border-radius: 17px; }
+    .complete-rule.show { display: block; }
+    .complete-rule h3 { margin: 0 0 11px; font-family: Georgia, "Times New Roman", serif; font-size: 1.45rem; }
+    .complete-rule ul { margin: 0; padding-left: 1.25rem; }
+    .complete-rule li + li { margin-top: 13px; }
+    .complete-rule .rule-zh { display: block; color: #5d6b55; }
+
+    .restart-wrap { display: flex; justify-content: center; padding: 4px 0 20px; }
+    .restart-button { color: var(--terracotta-dark); background: transparent; border: 1.5px solid #c99e8f; }
+    .restart-button:hover { background: rgba(255,255,255,.55); }
+    .footer { padding: 10px 0; text-align: center; color: var(--muted); font-size: .82rem; }
+
+    @media (min-width: 620px) {
+      .options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .rule-options { grid-template-columns: 1fr; }
+      .part-card { margin-bottom: 30px; }
+    }
+    @media (max-width: 430px) {
+      .page-shell { width: min(100% - 18px, 820px); }
+      .hero { padding-top: 22px; }
+      .part-card { padding: 19px 16px; border-radius: 18px; }
+      .check-button { width: 100%; }
+      .actions { align-items: stretch; }
+      .score { text-align: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell" id="top">
+    <header class="hero">
+      <p class="eyebrow">Ripasso A2 · 在线复习</p>
+      <h1>Imperativo presente</h1>
+      <p class="subtitle">Prima fai il test, poi completa la regola.</p>
+      <p class="zh">先完成测试，然后补充并总结命令式规则。</p>
+    </header>
+
+    <div class="progress-wrap" aria-label="Progresso / 学习进度">
+      <div class="progress-label"><span>Progresso · 学习进度</span><span id="progress-text">Parte 1 di 5</span></div>
+      <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
+    </div>
+
+    <section class="part-card" id="part-1" data-part="1">
+      <p class="part-number">Parte 1 · 01</p>
+      <h2>Imperativo base</h2>
+      <p class="part-intro zh">选择正确的命令式形式。</p>
+      <div class="questions"></div>
+      <div class="actions">
+        <button class="check-button" type="button">Controlla le risposte / 检查答案</button>
+        <output class="score" aria-live="polite">—/8</output>
+        <div class="section-message" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="part-card" id="part-2" data-part="2" hidden>
+      <p class="part-number">Parte 2 · 02</p>
+      <h2>Imperativo riflessivo</h2>
+      <p class="part-intro zh">把括号里的自反动词变成命令式。</p>
+      <div class="questions"></div>
+      <div class="actions">
+        <button class="check-button" type="button">Controlla le risposte / 检查答案</button>
+        <output class="score" aria-live="polite">—/8</output>
+        <div class="section-message" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="part-card" id="part-3" data-part="3" hidden>
+      <p class="part-number">Parte 3 · 03</p>
+      <h2>Imperativo irregolare e pronomi</h2>
+      <p class="part-intro zh">选择正确的不规则命令式，或“命令式 + 代词”的形式。</p>
+      <div class="questions"></div>
+      <div class="actions">
+        <button class="check-button" type="button">Controlla le risposte / 检查答案</button>
+        <output class="score" aria-live="polite">—/10</output>
+        <div class="section-message" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="part-card" id="part-4" data-part="4" hidden>
+      <p class="part-number">Parte 4 · 04</p>
+      <h2>Imperativo formale Lei</h2>
+      <p class="part-intro zh">把动词变成尊称 Lei 的命令式，也就是“请您……”。</p>
+      <div class="questions"></div>
+      <div class="actions">
+        <button class="check-button" type="button">Controlla le risposte / 检查答案</button>
+        <output class="score" aria-live="polite">—/10</output>
+        <div class="section-message" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="part-card" id="part-5" data-part="5" hidden>
+      <p class="part-number">Parte 5 · 05</p>
+      <h2>Completa la regola</h2>
+      <p class="part-intro zh">完成并总结命令式规则。</p>
+      <div class="questions"></div>
+      <div class="actions">
+        <button class="check-button" type="button">Controlla la regola / 检查规则</button>
+        <output class="score" aria-live="polite">—/3</output>
+        <div class="section-message" role="status" aria-live="polite"></div>
+      </div>
+      <div class="complete-rule" id="complete-rule" aria-live="polite">
+        <h3>Regola completa · 完整规则</h3>
+        <ul>
+          <li><strong>L’imperativo si usa per dare ordini, consigli, istruzioni o inviti.</strong><span class="rule-zh">命令式可以用来表达命令、建议、指示或邀请。</span></li>
+          <li><strong>Nell’imperativo affermativo, i pronomi atoni di solito si attaccano alla fine del verbo.</strong><span class="rule-zh">在肯定命令式中，不重读代词通常接在动词后面。</span>Esempi: guardalo, scrivimi, rilassati, divertitevi, teniamoci.</li>
+          <li><strong>Con i verbi riflessivi nella forma di cortesia, il pronome si mette prima del verbo.</strong><span class="rule-zh">尊称 Lei 的自反动词命令式中，代词放在动词前。</span>Esempi: si accomodi, si sieda, non si preoccupi.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="restart-wrap">
+      <button type="button" class="restart-button" id="restart">Ricomincia / 重新开始</button>
+    </div>
+    <footer class="footer">Buono studio! · 好好学习意大利语</footer>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const parts = [
+        {
+          type: "choice",
+          success: "Perfetto! Hai completato l’imperativo base.",
+          questions: [
+            { zh: "你想对一个朋友说：“听一下！”", sentence: "__________ un attimo!", options: ["Ascolta", "Ascolti", "Ascoltate"], answer: "Ascolta" },
+            { zh: "你想对一群朋友说：“看这里！”", sentence: "__________ qui!", options: ["Guarda", "Guardate", "Guardi"], answer: "Guardate" },
+            { zh: "你想说：“我们开始吧！”", sentence: "__________!", options: ["Comincia", "Cominciamo", "Cominciate"], answer: "Cominciamo" },
+            { zh: "你想对一个朋友说：“读这篇文章！”", sentence: "__________ questo articolo!", options: ["Leggi", "Leggete", "Leggiamo"], answer: "Leggi" },
+            { zh: "你想对一群学生说：“写句子！”", sentence: "__________ le frasi!", options: ["Scrivi", "Scrivete", "Scriviamo"], answer: "Scrivete" },
+            { zh: "你想说：“我们保持联系吧！”", sentence: "__________ in contatto!", options: ["Teniamoci", "Tenetevi", "Tieniti"], answer: "Teniamoci" },
+            { zh: "你想对一个朋友说：“走快点！”", sentence: "__________ veloce!", options: ["Cammina", "Cammini", "Camminate"], answer: "Cammina" },
+            { zh: "你想对一群人说：“进来吧！”", sentence: "__________ pure!", options: ["Entra", "Entrate", "Entri"], answer: "Entrate" }
+          ]
+        },
+        {
+          type: "text",
+          success: "Perfetto! Hai completato l’imperativo riflessivo.",
+          questions: [
+            { verb: "(rilassarsi – tu)", sentence: "__________ appena puoi!", answer: "rilassati" },
+            { verb: "(riposarsi – tu)", sentence: "__________ un po’!", answer: "riposati" },
+            { verb: "(divertirsi – tu)", sentence: "__________!", answer: "divertiti" },
+            { verb: "(divertirsi – voi)", sentence: "__________!", answer: "divertitevi" },
+            { verb: "(impegnarsi – tu)", sentence: "__________ al massimo!", answer: "impegnati" },
+            { verb: "(tenersi – noi)", sentence: "__________ in contatto!", answer: "teniamoci" },
+            { verb: "(ricordarsi – tu)", sentence: "__________ di pagare questa bolletta.", answer: "ricordati" },
+            { verb: "(prendersi – tu)", sentence: "__________ cura di te stesso/a.", answer: "prenditi" }
+          ]
+        },
+        {
+          type: "choice",
+          success: "Perfetto! Hai completato le forme irregolari e i pronomi.",
+          questions: [
+            { zh: "你想对朋友说：“要有耐心！”", sentence: "__________ pazienza!", options: ["Abbi", "Hai", "Avere"], answer: "Abbi" },
+            { zh: "你想对朋友说：“对客户友好一点！”", sentence: "__________ gentile con i clienti!", options: ["Sii", "Sei", "Essere"], answer: "Sii" },
+            { zh: "你想说：“走开！”", sentence: "__________ via!", options: ["Va’ / Vai", "Andi", "Andare"], answer: "Va’ / Vai" },
+            { zh: "你想说：“小心！”", sentence: "__________ attento/a!", options: ["Sta’ / Stai", "Stare", "Stia"], answer: "Sta’ / Stai" },
+            { zh: "你想说：“告诉大家要准时。”", sentence: "__________ a tutti di essere puntuali.", options: ["Di’", "Dici", "Dire"], answer: "Di’" },
+            { zh: "你想说：“听我一下！”", sentence: "__________ un attimo!", options: ["Ascoltami", "Ascolta mi", "Mi ascolta"], answer: "Ascoltami" },
+            { zh: "这个视频很有意思。看一下它！", sentence: "Questo video è molto interessante. __________!", options: ["Guardalo", "Guardala", "Guarda lo"], answer: "Guardalo", explanation: "video 是阳性单数，所以使用 lo；guarda + lo = guardalo。" },
+            { zh: "这张照片很漂亮。看一下它！", sentence: "Questa foto è bellissima. __________!", options: ["Guardala", "Guardalo", "Guarda la"], answer: "Guardala", explanation: "foto 是阴性单数，所以使用 la；guarda + la = guardala。" },
+            { zh: "你想说：“告诉我！”", sentence: "__________!", options: ["Dimmi", "Di’mi", "Dimi"], answer: "Dimmi" },
+            { zh: "你想说：“让我看看！”", sentence: "__________ vedere!", options: ["Fammi", "Fa’mi", "Fami"], answer: "Fammi" }
+          ]
+        },
+        {
+          type: "text",
+          success: "Perfetto! Hai completato l’imperativo formale.",
+          questions: [
+            { verb: "(chiamare)", sentence: "__________ domani mattina, per favore.", answer: "chiami" },
+            { verb: "(firmare)", sentence: "__________ qui sotto, per favore.", answer: "firmi" },
+            { verb: "(sentire)", sentence: "__________, dov’è l’ambulatorio San Leo?", answer: "senta" },
+            { verb: "(prendere)", sentence: "__________ questa maglia blu, Le sta molto bene.", answer: "prenda" },
+            { verb: "(chiudere)", sentence: "__________ la porta, per favore. Fa molto freddo!", answer: "chiuda" },
+            { verb: "(aprire)", sentence: "__________ la finestra, per favore.", answer: "apra" },
+            { verb: "(preoccuparsi)", sentence: "Non __________, va tutto bene.", answer: "si preoccupi" },
+            { verb: "(accomodarsi)", sentence: "Prego, __________ pure.", answer: "si accomodi" },
+            { verb: "(sedersi)", sentence: "Prego, __________ qui.", answer: "si sieda" },
+            { verb: "(dire)", sentence: "Mi __________ pure.", answer: "dica" }
+          ]
+        },
+        {
+          type: "choice",
+          success: "Perfetto! Hai completato tutte le regole.",
+          questions: [
+            {
+              verb: "Regola 1",
+              sentence: "L’imperativo si usa per:",
+              zh: "命令式可以用来表达：",
+              options: ["dare ordini, consigli, istruzioni o inviti", "raccontare un fatto passato", "descrivere una situazione nel passato"],
+              optionZh: ["命令、建议、指示或邀请", "过去发生的事情", "过去的状态"],
+              answer: "dare ordini, consigli, istruzioni o inviti"
+            },
+            {
+              verb: "Regola 2",
+              sentence: "Nell’imperativo affermativo, i pronomi atoni di solito si mettono:",
+              zh: "在肯定命令式中，不重读代词通常：",
+              options: ["prima del verbo", "dopo il verbo, attaccati al verbo", "sempre separati dal verbo"],
+              optionZh: ["放在动词前", "接在动词后", "永远和动词分开"],
+              answer: "dopo il verbo, attaccati al verbo",
+              examples: "guardalo = guarda + lo · scrivimi = scrivi + mi · rilassati = rilassa + ti · divertitevi = divertite + vi · teniamoci = teniamo + ci"
+            },
+            {
+              verb: "Regola 3",
+              sentence: "Nell’imperativo formale con i verbi riflessivi, il pronome si mette:",
+              zh: "尊称 Lei 的自反动词命令式中，自反代词一般：",
+              options: ["prima del verbo", "dopo il verbo", "sempre alla fine della frase"],
+              optionZh: ["放在动词前", "接在动词后", "永远放在句子最后"],
+              answer: "prima del verbo",
+              examples: "si accomodi · si sieda · non si preoccupi"
+            }
+          ]
+        }
+      ];
+
+      const retryHtml = "<span><strong>Non hai ancora risposto correttamente a tutte le domande.</strong> Correggi gli errori e riprova.</span><span>你还没有全部答对。请修改错误后再次提交。</span>";
+      const escapeHtml = (value) => String(value).replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char]));
+      const normalize = (value) => String(value || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[’‘`´]/g, "'")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\bdove\s+e\b/g, "dov'e")
+        .replace(/[']/g, " ")
+        .replace(/\s+/g, " ");
+
+      function questionMarkup(question, questionIndex, partIndex, type) {
+        const name = `p${partIndex + 1}-q${questionIndex + 1}`;
+        const head = `<div class="question-head"><span class="q-number">${questionIndex + 1}</span>${question.verb ? `<span class="verb-label">${escapeHtml(question.verb)}</span>` : ""}</div>`;
+        const zh = question.zh ? `<p class="prompt-zh zh">${escapeHtml(question.zh)}</p>` : "";
+        const sentence = `<p class="sentence">${escapeHtml(question.sentence)}</p>`;
+        let answerField;
+
+        if (type === "text") {
+          answerField = `<input class="text-answer" type="text" name="${name}" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Risposta ${questionIndex + 1}">`;
+        } else {
+          const ruleClass = partIndex === 4 ? " rule-options" : "";
+          answerField = `<div class="options${ruleClass}">${question.options.map((option, optionIndex) => `
+            <label class="option">
+              <input type="radio" name="${name}" value="${escapeHtml(option)}">
+              <span>${escapeHtml(option)}${question.optionZh ? `<span class="option-zh zh">${escapeHtml(question.optionZh[optionIndex])}</span>` : ""}</span>
+            </label>`).join("")}</div>`;
+        }
+
+        const examples = question.examples ? `<div class="examples"><strong>Esempi · 例子</strong>${escapeHtml(question.examples)}</div>` : "";
+        const explanation = question.explanation ? `<p class="explanation">💡 ${escapeHtml(question.explanation)}</p>` : "";
+        return `<div class="question" data-answer="${escapeHtml(question.answer)}">${head}${zh}${sentence}${answerField}<p class="feedback" aria-live="polite"></p>${explanation}${examples}</div>`;
+      }
+
+      parts.forEach((part, partIndex) => {
+        const card = document.querySelector(`[data-part="${partIndex + 1}"]`);
+        card.querySelector(".questions").innerHTML = part.questions.map((question, questionIndex) => questionMarkup(question, questionIndex, partIndex, part.type)).join("");
+        card.querySelector(".check-button").addEventListener("click", () => checkPart(partIndex));
+      });
+
+      function getValue(question, type) {
+        if (type === "text") return question.querySelector(".text-answer").value;
+        return question.querySelector("input[type='radio']:checked")?.value || "";
+      }
+
+      function checkPart(partIndex) {
+        const part = parts[partIndex];
+        const card = document.querySelector(`[data-part="${partIndex + 1}"]`);
+        const questions = [...card.querySelectorAll(".question")];
+        let score = 0;
+
+        questions.forEach((question, index) => {
+          const isCorrect = normalize(getValue(question, part.type)) === normalize(part.questions[index].answer);
+          const feedback = question.querySelector(".feedback");
+          question.classList.add("checked");
+          question.classList.toggle("is-correct", isCorrect);
+          question.classList.toggle("is-incorrect", !isCorrect);
+          feedback.className = `feedback show ${isCorrect ? "correct" : "incorrect"}`;
+          feedback.textContent = isCorrect ? "✓ Corretto" : `✗ Risposta corretta: ${part.questions[index].answer}`;
+          if (isCorrect) score += 1;
+        });
+
+        card.querySelector(".score").textContent = `${score}/${questions.length}`;
+        const message = card.querySelector(".section-message");
+        message.className = `section-message show ${score === questions.length ? "success" : "retry"}`;
+
+        if (score === questions.length) {
+          message.textContent = part.success;
+          if (partIndex < parts.length - 1) unlockPart(partIndex + 1);
+          else document.getElementById("complete-rule").classList.add("show");
+        } else {
+          message.innerHTML = retryHtml;
+        }
+      }
+
+      function unlockPart(nextIndex) {
+        const nextCard = document.querySelector(`[data-part="${nextIndex + 1}"]`);
+        if (nextCard.hidden) {
+          nextCard.hidden = false;
+          updateProgress(nextIndex + 1);
+          window.setTimeout(() => nextCard.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+        }
+      }
+
+      function updateProgress(visibleParts) {
+        document.getElementById("progress-text").textContent = `Parte ${visibleParts} di 5`;
+        document.getElementById("progress-bar").style.width = `${visibleParts * 20}%`;
+      }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") event.preventDefault();
+      });
+
+      document.getElementById("restart").addEventListener("click", () => {
+        document.querySelectorAll("input").forEach((input) => {
+          if (input.type === "radio") input.checked = false;
+          else input.value = "";
+        });
+        document.querySelectorAll(".question").forEach((question) => question.classList.remove("checked", "is-correct", "is-incorrect"));
+        document.querySelectorAll(".feedback").forEach((feedback) => { feedback.className = "feedback"; feedback.textContent = ""; });
+        document.querySelectorAll(".section-message").forEach((message) => { message.className = "section-message"; message.textContent = ""; });
+        document.querySelectorAll(".score").forEach((score, index) => { score.textContent = `—/${parts[index].questions.length}`; });
+        document.querySelectorAll("[data-part]").forEach((card, index) => { card.hidden = index !== 0; });
+        document.getElementById("complete-rule").classList.remove("show");
+        updateProgress(1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      updateProgress(1);
+    })();
+  </script>
+</body>
+</html>
